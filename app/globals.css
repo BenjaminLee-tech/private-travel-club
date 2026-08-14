@@ -1,1 +1,55 @@
 @import "tailwindcss";
+
+@keyframes heroEyebrow {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroTitle {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-eyebrow {
+  opacity: 0;
+  animation: heroEyebrow 1s ease-out 0.4s forwards;
+}
+
+.hero-title {
+  opacity: 0;
+  animation: heroTitle 1.2s ease-out 0.8s forwards;
+}
+
+@keyframes heroZoom {
+
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+
+  100% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+
+}
+
+.animate-heroZoom {
+  animation: heroZoom 7s ease-in-out forwards;
+}
+

@@ -1,11 +1,53 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 const navItems = [
   { label: "Journeys", href: "#journeys" },
-  { label: "Philosophy", href: "#philosophy" },
   { label: "The Club", href: "#club" },
   { label: "Stories", href: "#stories" },
 ];
 
 export default function Home() {
+
+    const heroImages = [
+    "/images/travel-hero-1.jpg",
+    "/images/travel-hero-2.jpg",
+    "/images/travel-hero-3.jpg",
+    "/images/travel-hero-4.jpg",
+    "/images/travel-hero-5.jpg",
+  ];
+
+  const [currentHero, setCurrentHero] = useState(0);
+  const [previousHero, setPreviousHero] = useState<number | null>(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  useEffect(() => {
+
+    const timer = setInterval(() => {
+
+      setPreviousHero(currentHero);
+
+      setCurrentHero(
+        (currentHero + 1) % heroImages.length
+      );
+
+      setIsTransitioning(true);
+
+
+      setTimeout(() => {
+        setPreviousHero(null);
+        setIsTransitioning(false);
+      }, 1000);
+
+
+    }, 7000);
+
+
+    return () => clearInterval(timer);
+
+  }, [currentHero]);
+  
   return (
     <main className="min-h-screen bg-[#0b0b0a] text-[#f5f1e8]">
       {/* Navigation */}
@@ -15,7 +57,7 @@ export default function Home() {
           {/* Logo */}
           <a
             href="#"
-            className="flex items-center -ml-12 lg:-ml-24"
+            className="flex items-center ml-0"
           >
             <img
               src="/images/ptc-logo.png"
@@ -25,7 +67,7 @@ export default function Home() {
           </a>
 
           {/* Navigation */}
-          <nav className="hidden items-center gap-8 md:flex">
+          <nav className="hidden items-center gap-10 md:flex">
             {navItems.map((item) => (
               <a
                 key={item.label}
@@ -44,135 +86,206 @@ export default function Home() {
             </a>
           </nav>
 
+          {/* Mobile menu button */}
+          <button
+            className="md:hidden text-[#292722] text-2xl"
+            aria-label="Open menu"
+          >
+            ☰
+          </button>
+
         </div>
       </header>
 
       {/* Hero */}
-      <section className="relative flex min-h-screen items-center justify-center overflow-hidden">
-        {/* Background image */}
+      <section
+        className="
+          relative
+          min-h-screen
+          overflow-hidden
+          flex
+          items-center
+        "
+      >
+
+      {/* Background Image Slideshow */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+
+        {/* Old image fading out */}
+        {previousHero !== null && (
+          <div
+            className="
+              absolute inset-0
+              bg-cover
+              bg-center
+              animate-heroOut
+            "
+            style={{
+              backgroundImage:
+                `url('${heroImages[previousHero]}')`,
+            }}
+          />
+        )}
+
+
+        {/* New image fading in + zooming */}
         <div
-          className="absolute inset-0 scale-105 bg-cover bg-center"
+          key={currentHero}
+          className="
+            absolute inset-0
+            bg-cover
+            bg-center
+            animate-heroZoom
+            animate-heroFade
+          "
           style={{
-            backgroundImage: "url('/images/hero.jpg')",
+            backgroundImage:
+              `url('${heroImages[currentHero]}')`,
           }}
         />
 
-        {/* Cinematic atmosphere */}
-        <div className="absolute inset-0 bg-white/30" />
+      </div>
 
-        <div className="absolute inset-0 bg-gradient-to-b from-white/35 via-white/10 to-black/20" />
+      {/* Dark Overlay */}
+      <div className="absolute inset-0 bg-black/10 z-[1]" />
 
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_25%,rgba(255,255,255,0.25)_100%)]" />
+      {/* Content */}
+      <div
+        className="
+          relative
+          z-10
+          mx-auto
+          max-w-4xl
+          px-6
+        "
+      >
 
-        {/* Hero content */}
-        <div className="relative z-10 mx-auto max-w-6xl px-6 pt-20 text-center">
-          <p className="mb-8 text-[10px] uppercase tracking-[0.55em] text-[#2b2925]/70 sm:text-[11px]">
-            A private collection of extraordinary journeys
+          <p className="hero-eyebrow mb-8 text-[11px] uppercase tracking-[0.55em] text-[#d6b27a]">
+            Private Travel Club
           </p>
 
           <h1
-            className="font-serif text-[#292722] text-5xl leading-[0.95] tracking-[-0.04em] sm:text-7xl lg:text-[clamp(4rem,7vw,7rem)] drop-shadow-[0_2px_4px_rgba(255,255,255,0.25)]"
+            className="
+            hero-title
+            text-3xl
+            font-light
+            leading-tight
+            tracking-wide
+            sm:text-7xl
+            "
+            style={{
+              textShadow: "0 4px 20px rgba(0,0,0,0.55)",
+            }}
           >
-            <span className="block">
-              Travel as
-            </span>
-
-            <span className="block font-light italic">
-              a Life Philosophy.
-            </span>
+            Travel as a
+            <br />
+            Life Philosophy.
           </h1>
 
-          <div className="mx-auto mt-10 h-px w-16 bg-white/40" />
-
-          <p className="mx-auto mt-6 max-w-lg text-sm leading-7 tracking-wide text-[#292722]/75 sm:text-base">
-            Extraordinary journeys for people who believe that where we go
-            changes who we become.
+          <p className="mx-auto mt-8 max-w-2xl text-sm leading-relaxed text-white/80 sm:text-base">
+            A private community for individuals who believe travel is
+            not simply about destinations, but about experiences,
+            culture, connection, and personal transformation.
           </p>
 
-          <div className="mt-11">
-          <a
-            href="#club"
-            className="group inline-flex items-center gap-4 border border-[#b18a50]/70 bg-[#b18a50] px-8 py-4 text-[10px] uppercase tracking-[0.3em] text-white shadow-lg transition-all duration-500 hover:bg-[#98733f]"
-          >
-            <span>Explore the Club</span>
-            <span className="transition-transform duration-500 group-hover:translate-x-1">
-              →
-            </span>
-          </a>
+          <div className="mt-12 flex justify-center gap-5">
+
+            <a
+              href="#club"
+              className="rounded-full bg-[#a47b43] px-7 py-3.5 text-[11px] uppercase tracking-[0.35em] text-white transition duration-300 hover:bg-[#b9925c]"
+            >
+              Apply for Membership
+            </a>
+
+            <a
+              href="#about"
+              className="rounded-full border border-white/40 px-8 py-4 text-[11px] uppercase tracking-[0.35em] text-white transition duration-300 hover:bg-white hover:text-[#292722]"
+            >
+              Explore
+            </a>
+
           </div>
+
         </div>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 flex-col items-center gap-3">
-          <span className="text-[8px] uppercase tracking-[0.45em] text-[#2b2925]/55">
-            Scroll
-          </span>
-
-          <div className="relative h-12 w-px overflow-hidden bg-black/20">
-            <div className="absolute left-0 top-0 h-1/2 w-px bg-[#9b7745]/70" />
-          </div>
-        </div>
       </section>
 
       {/* Philosophy */}
       <section
         id="philosophy"
-        className="bg-[#f5f1e8] px-6 py-20 text-[#1d1c19] sm:py-28"
+        className="bg-[#f7f4ee] px-6 py-24 text-[#1d1c19] sm:py-32"
       >
-        <div className="mx-auto max-w-7xl">
-          <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
 
-            {/* Philosophy image */}
-            <div className="overflow-hidden">
-              <img
-                src="/images/philosophy.jpg"
-                alt="Luxury Mediterranean travel"
-                className="h-full min-h-[420px] w-full object-cover transition duration-700 hover:scale-[1.02]"
-              />
-            </div>
+        <div
+          className="
+            mx-auto
+            grid
+            max-w-6xl
+            items-center
+            gap-10
+            px-6
+            md:grid-cols-2
+            md:gap-12
+          "
+        >
 
-            {/* Philosophy content */}
-            <div className="relative">
-              <p className="text-[10px] uppercase tracking-[0.4em] text-[#a47b43]">
-                Our Philosophy
-              </p>
+          {/* Philosophy Image */}
+          <div className="overflow-hidden">
+          <img
+            src="/images/philosophy.jpg"
+            alt="Private travel experience"
+            className="
+              h-[360px]
+              w-full
+              object-cover
+              sm:h-[520px]
+              rounded-sm
+              shadow-xl
+            "
+          />
+          </div>
 
-              <h2 className="mt-6 max-w-xl font-serif text-4xl leading-[1.05] tracking-[-0.02em] sm:text-5xl lg:text-6xl">
-                More Than Travel.
-                <br />
-                <span className="italic font-light">
-                  A Way of Life.
-                </span>
-              </h2>
 
-              <div className="mt-6 h-px w-12 bg-[#b18a50]" />
+          {/* Philosophy Content */}
+          <div className="flex flex-col justify-center pt-8 md:pt-0">
 
-              <p className="mt-7 max-w-lg text-sm leading-7 text-[#292722]/70 sm:text-base">
-                Private travel is an invitation to experience the world
-                differently. We curate transformative journeys, meaningful
-                relationships and access to extraordinary places.
-              </p>
+            <p className="text-[11px] uppercase tracking-[0.5em] text-[#a47b43]">
+              Our Philosophy
+            </p>
 
-              <a
-                href="#journeys"
-                className="group mt-9 inline-flex items-center gap-4 text-[10px] uppercase tracking-[0.28em] text-[#292722] transition-colors duration-300 hover:text-[#a47b43]"
-              >
-                <span>Discover Our Philosophy</span>
-                <span className="transition-transform duration-300 group-hover:translate-x-1">
-                  →
-                </span>
-              </a>
+            <div className="mt-6 h-px w-16 bg-[#a47b43]" />
 
-              {/* Decorative emblem */}
-              <div className="pointer-events-none absolute -bottom-8 right-0 hidden h-24 w-24 items-center justify-center rounded-full border border-[#b18a50]/35 lg:flex">
-                <span className="font-serif text-3xl text-[#b18a50]/70">
-                  FT
-                </span>
-              </div>
-            </div>
+            <h2
+              className="mt-8 text-4xl font-light leading-tight tracking-wide sm:text-6xl"
+              style={{
+                textShadow:
+                  "0 3px 15px rgba(80,60,30,0.18)",
+              }}
+            >
+              More Than Travel.
+              <br />
+              <span className="italic">
+                A Way of Life.
+              </span>
+            </h2>
+
+
+            <p className="mt-8 text-sm leading-loose text-[#292722]/70 sm:text-base">
+              Private travel is an invitation to experience the world
+              differently — with greater depth, intention, and connection.
+            </p>
+
+
+            <p className="mt-6 text-sm leading-loose text-[#292722]/70 sm:text-base">
+              We believe meaningful journeys create deeper connections,
+              inspire curiosity, and transform the way we understand
+              ourselves and the world around us.
+            </p>
 
           </div>
+
         </div>
+
       </section>
 
       {/* Featured Journeys */}
@@ -494,6 +607,71 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Philosophy */}
+      <section
+        id="about"
+        className="bg-[#e8dfd1] px-6 py-24 text-[#292722] sm:py-32"
+      >
+        <div className="mx-auto max-w-5xl text-center">
+
+          <p className="text-[11px] uppercase tracking-[0.55em] text-[#a47b43]">
+            Our Philosophy
+          </p>
+
+          <h2
+            className="mt-8 text-4xl font-light leading-tight tracking-wide sm:text-6xl"
+            style={{
+              textShadow: "0 4px 18px rgba(60,45,20,0.18)",
+            }}
+          >
+            Travel as a Life Philosophy.
+          </h2>
+
+          <p className="mx-auto mt-8 max-w-3xl text-sm leading-loose text-[#292722]/70 sm:text-base">
+            We believe travel is more than movement.
+            It is a way to discover new perspectives,
+            create meaningful connections, and experience
+            the world with intention.
+          </p>
+
+          <div className="mx-auto mt-14 grid max-w-3xl gap-10 sm:grid-cols-3">
+
+            <div>
+              <h3 className="text-sm uppercase tracking-[0.3em] text-[#a47b43]">
+                Discover
+              </h3>
+              <p className="mt-4 text-sm text-[#292722]/70">
+                Hidden places, authentic cultures, and unforgettable moments.
+              </p>
+            </div>
+
+
+            <div>
+              <h3 className="text-sm uppercase tracking-[0.3em] text-[#a47b43]">
+                Connect
+              </h3>
+              <p className="mt-4 text-sm text-[#292722]/70">
+                A community of travelers who share curiosity and passion.
+              </p>
+            </div>
+
+
+            <div>
+              <h3 className="text-sm uppercase tracking-[0.3em] text-[#a47b43]">
+                Transform
+              </h3>
+              <p className="mt-4 text-sm text-[#292722]/70">
+                Journeys that influence how we see ourselves and the world.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+      </section>     
+
+      <div className="h-0" />
+
       {/* Membership */}
       <section
         id="club"
@@ -534,78 +712,362 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-[#1d1c19] px-6 py-14 text-[#f5f1e8]">
-        <div className="mx-auto max-w-7xl">
+      {/* Featured Destinations */}
+      <section
+        id="destinations"
+        className="bg-[#292722] px-6 py-24 text-white sm:py-32"
+      >
 
-          <div className="grid gap-12 border-b border-white/15 pb-12 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mx-auto max-w-6xl">
 
-            <div className="lg:col-span-2">
-              <p className="text-sm tracking-[0.28em]">
-                PRIVATE TRAVEL CLUB
-              </p>
+          <div className="mb-16 text-center">
 
-              <p className="mt-7 max-w-md font-serif text-xl leading-relaxed text-white/90">
-                Travel as a life philosophy.
-              </p>
-            </div>
+            <p className="text-[11px] uppercase tracking-[0.55em] text-[#d6b27a]">
+              Featured Destinations
+            </p>
 
-            <div>
-              <p className="text-[9px] uppercase tracking-[0.3em] text-white/60">
-                Explore
-              </p>
-
-              <div className="mt-5 space-y-3 text-xs text-white/65">
-                <a href="#journeys" className="block hover:text-white">
-                  Journeys
-                </a>
-
-                <a href="#philosophy" className="block hover:text-white">
-                  Philosophy
-                </a>
-
-                <a href="#stories" className="block hover:text-white">
-                  Journal
-                </a>
-
-                <a href="#club" className="block hover:text-white">
-                  Membership
-                </a>
-              </div>
-            </div>
-
-            <div>
-              <p className="text-[9px] uppercase tracking-[0.3em] text-white/40">
-                Contact
-              </p>
-
-              <div className="mt-5 space-y-3 text-xs text-white/65">
-                <p>hello@privatetravelclub.com</p>
-                <p>New York · London · Singapore</p>
-              </div>
-            </div>
+            <h2
+              className="mt-8 text-4xl font-light tracking-wide sm:text-6xl"
+            >
+              Journeys Beyond
+              <br />
+              Ordinary Travel.
+            </h2>
 
           </div>
 
-          <div className="flex flex-col justify-between gap-5 pt-7 text-[9px] uppercase tracking-[0.25em] text-white/35 sm:flex-row">
-            <p>© 2026 Private Travel Club</p>
 
-            <div className="flex gap-6">
-              <a href="#" className="hover:text-white">
-                Instagram
-              </a>
+          <div className="grid gap-8 md:grid-cols-3">
 
-              <a href="#" className="hover:text-white">
-                Privacy
-              </a>
 
-              <a href="#" className="hover:text-white">
-                Terms
-              </a>
-            </div>
+            {/* Card 1 */}
+            <article className="group">
+
+              <div className="overflow-hidden">
+                <img
+                  src="/images/destination-1.jpg"
+                  alt="Luxury destination"
+                  className="h-[420px] w-full object-cover transition duration-700 group-hover:scale-110"
+                />
+              </div>
+
+              <h3 className="mt-6 text-xl font-light">
+                Mediterranean Escape
+              </h3>
+
+              <p className="mt-3 text-sm text-white/60">
+                Private coastal experiences and timeless landscapes.
+              </p>
+
+            </article>
+
+
+            {/* Card 2 */}
+            <article className="group">
+
+              <div className="overflow-hidden">
+                <img
+                  src="/images/destination-2.jpg"
+                  alt="Mountain destination"
+                  className="h-[420px] w-full object-cover transition duration-700 group-hover:scale-110"
+                />
+              </div>
+
+              <h3 className="mt-6 text-xl font-light">
+                Alpine Retreat
+              </h3>
+
+              <p className="mt-3 text-sm text-white/60">
+                Remote mountain journeys designed for reflection.
+              </p>
+
+            </article>
+
+
+            {/* Card 3 */}
+            <article className="group">
+
+              <div className="overflow-hidden">
+                <img
+                  src="/images/destination-3.jpg"
+                  alt="Island destination"
+                  className="h-[420px] w-full object-cover transition duration-700 group-hover:scale-110"
+                />
+              </div>
+
+              <h3 className="mt-6 text-xl font-light">
+                Island Sanctuary
+              </h3>
+
+              <p className="mt-3 text-sm text-white/60">
+                Exclusive escapes surrounded by nature.
+              </p>
+
+            </article>
+
+
           </div>
 
         </div>
+
+      </section>      
+
+      {/* Private Experiences */}
+      <section
+        id="experiences"
+        className="bg-[#f3eee5] px-6 py-24 text-[#292722] sm:py-32"
+      >
+
+        <div className="mx-auto max-w-6xl">
+
+          {/* Header */}
+          <div className="mb-16 text-center">
+
+            <p className="text-[11px] uppercase tracking-[0.55em] text-[#a47b43]">
+              Private Experiences
+            </p>
+
+            <h2
+              className="mt-8 text-4xl font-light leading-tight tracking-wide sm:text-6xl"
+            >
+              Beyond Travel.
+              <br />
+              Into Experiences.
+            </h2>
+
+            <p className="mx-auto mt-8 max-w-2xl text-sm leading-loose text-[#292722]/70 sm:text-base">
+              Every journey is designed around exceptional moments,
+              personal discovery, and access to experiences unavailable
+              to ordinary travelers.
+            </p>
+
+          </div>
+
+
+          {/* Experience Cards */}
+          <div className="grid gap-8 md:grid-cols-3">
+
+
+            {/* Card 1 */}
+            <article className="group">
+
+              <div className="overflow-hidden">
+                <img
+                  src="/images/experience-1.jpg"
+                  alt="Private luxury retreat"
+                  className="h-[500px] w-full object-cover transition duration-700 group-hover:scale-110"
+                />
+              </div>
+
+              <h3 className="mt-6 text-xl font-light">
+                Private Retreats
+              </h3>
+
+              <p className="mt-3 text-sm text-[#292722]/70">
+                Exceptional villas and hidden destinations created
+                for complete privacy.
+              </p>
+
+            </article>
+
+
+            {/* Card 2 */}
+            <article className="group">
+
+              <div className="overflow-hidden">
+                <img
+                  src="/images/experience-2.jpg"
+                  alt="Luxury transportation experience"
+                  className="h-[500px] w-full object-cover transition duration-700 group-hover:scale-110"
+                />
+              </div>
+
+              <h3 className="mt-6 text-xl font-light">
+                Exclusive Access
+              </h3>
+
+              <p className="mt-3 text-sm text-[#292722]/70">
+                Private aviation, yachts, and unique journeys
+                beyond traditional travel.
+              </p>
+
+            </article>
+
+
+            {/* Card 3 */}
+            <article className="group">
+
+              <div className="overflow-hidden">
+                <img
+                  src="/images/experience-3.jpg"
+                  alt="Cultural experience"
+                  className="h-[500px] w-full object-cover transition duration-700 group-hover:scale-110"
+                />
+              </div>
+
+              <h3 className="mt-6 text-xl font-light">
+                Cultural Moments
+              </h3>
+
+              <p className="mt-3 text-sm text-[#292722]/70">
+                Authentic encounters, cuisine, and stories
+                from around the world.
+              </p>
+
+            </article>
+
+
+          </div>
+
+        </div>
+
+      </section>
+
+      {/* Membership Invitation */}
+      <section
+        id="membership"
+        className="relative overflow-hidden bg-[#292722] px-6 py-28 text-white sm:py-36"
+      >
+
+        <div className="mx-auto max-w-4xl text-center">
+
+          <p className="text-[11px] uppercase tracking-[0.55em] text-[#d6b27a]">
+            Membership Invitation
+          </p>
+
+
+          <h2
+            className="mt-8 text-4xl font-light leading-tight sm:text-6xl"
+          >
+            Enter a World
+            <br />
+            Beyond Ordinary.
+          </h2>
+
+
+          <p
+            className="mx-auto mt-8 max-w-2xl text-sm leading-loose text-white/70 sm:text-base"
+          >
+            Membership provides access to exceptional destinations,
+            private experiences, and a global community of
+            passionate travelers.
+          </p>
+
+
+          <div className="mt-12">
+
+            <a
+              href="#"
+              className="inline-block rounded-full border border-[#d6b27a] px-10 py-4 text-[11px] uppercase tracking-[0.35em] text-[#d6b27a] transition duration-300 hover:bg-[#d6b27a] hover:text-[#292722]"
+            >
+              Request Membership
+            </a>
+
+          </div>
+
+
+        </div>
+
+      </section>
+
+      {/* Footer */}
+      <footer
+        className="bg-[#1d1c19] px-6 py-16 text-white"
+      >
+
+        <div className="mx-auto max-w-6xl">
+
+
+          <div className="grid gap-12 md:grid-cols-3">
+
+
+            {/* Brand */}
+            <div>
+
+              <h3 className="text-xl font-light tracking-[0.25em]">
+                PRIVATE
+                <br />
+                TRAVEL CLUB
+              </h3>
+
+
+              <p className="mt-6 max-w-xs text-sm leading-relaxed text-white/60">
+                Curated journeys, private experiences,
+                and meaningful connections around the world.
+              </p>
+
+            </div>
+
+
+
+            {/* Navigation */}
+            <div>
+
+              <h4 className="text-[11px] uppercase tracking-[0.45em] text-[#d6b27a]">
+                Explore
+              </h4>
+
+
+              <ul className="mt-6 space-y-4 text-sm text-white/70">
+
+                <li>
+                  <a href="#about" className="transition hover:text-white">
+                    Philosophy
+                  </a>
+                </li>
+
+                <li>
+                  <a href="#destinations" className="transition hover:text-white">
+                    Destinations
+                  </a>
+                </li>
+
+                <li>
+                  <a href="#experiences" className="transition hover:text-white">
+                    Experiences
+                  </a>
+                </li>
+
+              </ul>
+
+            </div>
+
+
+
+            {/* Contact */}
+            <div>
+
+              <h4 className="text-[11px] uppercase tracking-[0.45em] text-[#d6b27a]">
+                Contact
+              </h4>
+
+
+              <p className="mt-6 text-sm leading-relaxed text-white/70">
+                Membership inquiries
+                <br />
+                concierge@privatetravelclub.com
+              </p>
+
+
+            </div>
+
+
+          </div>
+
+
+
+          <div className="mt-16 border-t border-white/10 pt-8 text-center">
+
+            <p className="text-[11px] uppercase tracking-[0.35em] text-white/40">
+              © 2026 Private Travel Club. All Rights Reserved.
+            </p>
+
+          </div>
+
+
+        </div>
+
+
       </footer>
     </main>
   );
