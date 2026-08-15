@@ -118,13 +118,13 @@ export default function TheClubPage() {
                 places, with people, and with yourself.
               </p>
 
-              <button
-                type="button"
-                className="mt-8 border border-[#c69a3b] px-5 py-3 text-[10px] tracking-[0.18em] text-[#a87817] transition hover:bg-[#c69a3b] hover:text-white"
-              >
-                DISCOVER OUR PHILOSOPHY
-                <span className="ml-4">→</span>
-              </button>
+            <a
+            href="/#about"
+            className="mt-8 inline-block border border-[#c69a3b] px-5 py-3 text-[10px] tracking-[0.18em] text-[#a87817] transition hover:bg-[#c69a3b] hover:text-white"
+            >
+            DISCOVER OUR PHILOSOPHY
+            <span className="ml-4">→</span>
+            </a>
 
             </div>
           </div>
@@ -333,13 +333,13 @@ export default function TheClubPage() {
             YOUR JOURNEY. OUR PRIVILEGE.
           </h2>
 
-          <button
-            type="button"
-            className="mt-8 bg-[#d5a12b] px-8 py-4 text-[11px] tracking-[0.2em] text-white transition hover:bg-[#e2b542]"
-          >
-            BECOME A MEMBER
-            <span className="ml-5">→</span>
-          </button>
+        <a
+        href="/contact"
+        className="mt-8 inline-block bg-[#d5a12b] px-8 py-4 text-[11px] tracking-[0.2em] text-white transition hover:bg-[#e2b542]"
+        >
+        BECOME A MEMBER
+        <span className="ml-5">→</span>
+        </a>
 
           <p className="mt-7 text-[10px] tracking-[0.35em] text-[#d5a12b]">
             EXCLUSIVE. &nbsp; INTENTIONAL. &nbsp; UNFORGETTABLE.

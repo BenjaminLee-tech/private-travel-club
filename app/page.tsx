@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 const navItems = [
   { label: "Journeys", href: "#journeys" },
-  { label: "The Club", href: "#club" },
+  { label: "The Club", href: "/the-club" },
   { label: "Stories", href: "#stories" },
 ];
 
@@ -19,6 +19,7 @@ export default function Home() {
   ];
 
   const [currentHero, setCurrentHero] = useState(0);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [previousHero, setPreviousHero] = useState<number | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
@@ -56,7 +57,7 @@ export default function Home() {
 
           {/* Logo */}
           <a
-            href="#"
+            href="/"
             className="flex items-center ml-0"
           >
             <img
@@ -79,7 +80,7 @@ export default function Home() {
             ))}
 
             <a
-              href="#"
+              href="/login"
               className="ml-3 border border-[#a47b43]/60 px-5 py-2.5 text-[12px] uppercase tracking-[0.24em] text-[#292722] transition hover:bg-[#b18a50] hover:text-white"
             >
               Login
@@ -88,13 +89,44 @@ export default function Home() {
 
           {/* Mobile menu button */}
           <button
+            type="button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="md:hidden text-[#292722] text-2xl"
-            aria-label="Open menu"
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
           >
-            ☰
+            {mobileMenuOpen ? "×" : "☰"}
           </button>
 
         </div>
+
+        {mobileMenuOpen && (
+        <div className="border-t border-black/10 bg-white/95 px-6 py-6 backdrop-blur-md md:hidden">
+
+          <nav className="flex flex-col gap-5">
+
+            {navItems.map((item) => (
+              <a
+                key={item.label}
+                href={item.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-[11px] uppercase tracking-[0.3em] text-[#292722]"
+              >
+                {item.label}
+              </a>
+            ))}
+
+            <a
+              href="/login"
+              onClick={() => setMobileMenuOpen(false)}
+              className="border border-[#a47b43]/60 px-5 py-3 text-center text-[11px] uppercase tracking-[0.3em] text-[#292722]"
+            >
+              Login
+            </a>
+
+          </nav>
+
+        </div>
+      )}
       </header>
 
       {/* Hero */}
@@ -308,7 +340,7 @@ export default function Home() {
             </div>
 
             <a
-              href="#"
+              href="/trips"
               className="group hidden items-center gap-3 text-[10px] uppercase tracking-[0.25em] text-[#292722] sm:flex"
             >
               <span>View All Trips</span>
@@ -552,7 +584,7 @@ export default function Home() {
                 </p>
 
                 <a
-                  href="#"
+                  href="/trips/private-villa-escape"
                   className="group/link ml-6 flex shrink-0 items-center gap-2 text-[9px] uppercase tracking-[0.25em]"
                 >
                   Read
@@ -592,7 +624,7 @@ export default function Home() {
                 </p>
 
                 <a
-                  href="#"
+                  href="/trips/private-wilderness-journey"
                   className="group/link ml-6 flex shrink-0 items-center gap-2 text-[9px] uppercase tracking-[0.25em]"
                 >
                   Read
@@ -700,7 +732,7 @@ export default function Home() {
           </p>
 
           <a
-            href="#"
+            href="/the-club"
             className="mt-10 inline-flex bg-[#b18a50] px-9 py-4 text-[10px] uppercase tracking-[0.3em] text-white transition duration-300 hover:bg-[#98733f]"
           >
             Discover Membership
@@ -957,7 +989,7 @@ export default function Home() {
           <div className="mt-12">
 
             <a
-              href="#"
+              href="/contact"
               className="inline-block rounded-full border border-[#d6b27a] px-10 py-4 text-[11px] uppercase tracking-[0.35em] text-[#d6b27a] transition duration-300 hover:bg-[#d6b27a] hover:text-[#292722]"
             >
               Request Membership
