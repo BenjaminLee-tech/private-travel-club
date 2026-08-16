@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import ConciergeSection from "@/components/ConciergeSection";
 
 const navItems = [
   { label: "Journeys", href: "#journeys" },
@@ -241,6 +242,9 @@ export default function Home() {
         </div>
 
       </section>
+
+      {/* AI Concierge */}
+      <ConciergeSection />
 
       {/* Philosophy */}
       <section
