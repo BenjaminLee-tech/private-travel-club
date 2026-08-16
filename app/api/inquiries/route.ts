@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { prisma } from "@/lib/prisma";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -73,6 +75,67 @@ export async function POST(request: Request) {
         success: false,
         message: "Something went wrong.",
       },
+      { status: 500 }
+    );
+  }
+}
+
+export async function GET() {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session) {
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
+    const inquiries = await prisma.inquiry.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return NextResponse.json(inquiries);
+  } catch (error) {
+    console.error("Inquiry fetch error:", error);
+
+    return NextResponse.json(
+      { error: "Failed to load inquiries" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PATCH(request: Request) {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session) {
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
+    const data = await request.json();
+
+    const inquiry = await prisma.inquiry.update({
+      where: {
+        id: data.id,
+      },
+      data: {
+        status: data.status,
+      },
+    });
+
+    return NextResponse.json(inquiry);
+  } catch (error) {
+    console.error("Inquiry update error:", error);
+
+    return NextResponse.json(
+      { error: "Failed to update inquiry" },
       { status: 500 }
     );
   }
