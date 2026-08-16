@@ -52,7 +52,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-[#0b0b0a] text-[#f5f1e8]">
       {/* Navigation */}
-      <header className="absolute inset-x-0 top-0 z-20 border-b border-black/10 bg-white/35 backdrop-blur-md">
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-black/10 bg-white/35 backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-2 py-3 lg:px-4">
 
           {/* Logo */}
