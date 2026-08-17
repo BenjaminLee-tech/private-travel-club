@@ -53,3 +53,7 @@
   animation: heroZoom 7s ease-in-out forwards;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import ConciergeSection from "@/components/ConciergeSection";
 
 const navItems = [
+  { label: "Concierge", href: "#concierge" },
   { label: "Journeys", href: "#journeys" },
   { label: "The Club", href: "/the-club" },
   { label: "Stories", href: "#stories" },
@@ -243,8 +244,6 @@ export default function Home() {
 
       </section>
 
-      {/* AI Concierge */}
-      <ConciergeSection />
 
       {/* Philosophy */}
       <section
@@ -1005,6 +1004,9 @@ export default function Home() {
         </div>
 
       </section>
+      
+      {/* AI Concierge */}
+      <ConciergeSection />
 
       {/* Footer */}
       <footer

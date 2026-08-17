@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 
 export default function ConciergeSection() {
@@ -8,6 +8,7 @@ export default function ConciergeSection() {
   const [answer, setAnswer] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const answerRef = useRef<HTMLDivElement>(null);
 
   async function handleAsk() {
     if (!message.trim()) return;
@@ -26,11 +27,16 @@ export default function ConciergeSection() {
         }),
       });
 
-
       const data = await response.json();
 
       setAnswer(data.answer);
 
+      setTimeout(() => {
+        answerRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 100);
     } catch (error) {
       console.error(error);
 
@@ -39,13 +45,12 @@ export default function ConciergeSection() {
       );
     }
 
-
     setLoading(false);
   }
 
-
   return (
     <section
+      id="concierge"
       className="
         bg-[#f4efe7]
         px-6
@@ -54,63 +59,74 @@ export default function ConciergeSection() {
         sm:py-32
       "
     >
-
-        <div
+      <div
         className="
-            mx-auto
-            w-[90%]
-            text-center
+          mx-auto
+          w-[90%]
+          text-center
         "
+      >
+        {/* PRIVATE CONCIERGE LABEL */}
+
+        <p
+          className="
+            text-[11px]
+            uppercase
+            tracking-[0.5em]
+            text-[#a47b43]
+          "
         >
-
-
-        <p className="
-          text-[11px]
-          uppercase
-          tracking-[0.5em]
-          text-[#a47b43]
-        ">
           Private Concierge
         </p>
 
+        {/* TITLE */}
 
-        <h2 className="
-          mt-3
-          text-4xl
-          font-light
-          tracking-wide
-          sm:text-5xl
-        ">
+        <h2
+          className="
+            mt-3
+            text-4xl
+            font-light
+            tracking-wide
+            sm:text-5xl
+          "
+        >
           Your Journey Begins Here
         </h2>
 
+        {/* DESCRIPTION */}
 
-        <p className="
-        mx-auto
-        mt-6
-        max-w-3xl
-        text-sm
-        leading-5
-        text-gray-600
-        ">
+        <p
+          className="
+            mx-auto
+            mt-6
+            max-w-3xl
+            text-sm
+            leading-5
+            text-gray-600
+          "
+        >
           Tell us how you want to experience the world.
           Our private concierge will help create a journey
           designed around your preferences.
         </p>
 
+        {/* INPUT AREA */}
 
-
-        {/* Input Area */}
-
-            <div className="
+        <div
+          className="
             mx-auto
             mt-10
             w-[90%]
-            ">
-
+          "
+        >
           <input
             value={message}
             onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleAsk();
+              }
+            }}
             type="text"
             placeholder="I want a private Mediterranean escape..."
             className="
@@ -126,8 +142,6 @@ export default function ConciergeSection() {
               placeholder:text-gray-400
             "
           />
-
-
 
           <button
             onClick={handleAsk}
@@ -147,96 +161,86 @@ export default function ConciergeSection() {
           >
             {loading ? "Thinking..." : "Ask Concierge"}
           </button>
-
-
         </div>
 
-
-
-        {/* AI Reply Section */}
+        {/* AI REPLY SECTION */}
 
         {answer && (
-
-            <div
+          <div
+            ref={answerRef}
             className="
-                mt-12
-                flex
-                items-stretch
-                flex-col
-                gap-8
-                rounded-3xl
-                bg-white
-                p-8
-                text-left
-                lg:flex-row
+              mx-auto
+              mt-12
+              grid
+              w-full
+              grid-cols-1
+              gap-6
+              rounded-[2rem]
+              border
+              border-black/5
+              bg-white
+              p-6
+              text-left
+              shadow-sm
+              lg:grid-cols-3
+              lg:gap-8
+              lg:p-5
             "
->
-
-
-            {/* Image 30% */}
+          >
+            {/* ================================================= */}
+            {/* COLUMN 1 — IMAGE                                  */}
+            {/* ================================================= */}
 
             <div
               className="
+                relative
+                min-h-[280px]
                 w-full
-                lg:w-[50%]
+                overflow-hidden
+                rounded-[1.5rem]
+                lg:min-h-[320px]
               "
             >
-
-            <div className="
-            h-full
-            ">
-
-            <Image
+              <Image
                 src="/images/into-the-wild.png"
                 alt="Into the wild journey"
-                width={600}
-                height={600}
+                fill
                 className="
-                h-full
-                w-full
-                rounded-2xl
-                object-cover
+                  object-cover
                 "
-            />
-
+                sizes="
+                  (max-width: 1024px) 100vw,
+                  33vw
+                "
+              />
             </div>
 
-            </div>
-
-
-
-            {/* Reply Text 60% */}
+            {/* ================================================= */}
+            {/* COLUMNS 2 + 3 — CONCIERGE RESPONSE                */}
+            {/* ================================================= */}
 
             <div
               className="
-                w-full
-                lg:w-[50%]
+                min-w-0
+                lg:col-span-2
               "
             >
-
-              <p
+              <div
                 className="
                   whitespace-pre-line
-                  text-sm
-                  leading-5
+                  text-[15px]
+                  leading-7
                   text-gray-700
+                  lg:columns-2
+                  lg:gap-10
                 "
               >
                 {answer}
-              </p>
-
-
+              </div>
             </div>
-
-
           </div>
-
         )}
-
-
-
       </div>
-
     </section>
   );
 }
