@@ -18,10 +18,10 @@ export const authOptions: NextAuthOptions = {
       },
 
       async authorize(credentials) {
-        if (
-          credentials?.email === "admin@privatetravelclub.com" &&
-          credentials?.password === "admin123"
-        ) {
+      if (
+        credentials?.email === process.env.ADMIN_EMAIL &&
+        credentials?.password === process.env.ADMIN_PASSWORD
+      ) {
           return {
             id: "admin",
             name: "Private Travel Club Admin",
