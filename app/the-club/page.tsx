@@ -334,7 +334,7 @@ export default function TheClubPage() {
           </h2>
 
         <a
-        href="/contact"
+        href="/membership"
         className="mt-8 inline-block bg-[#d5a12b] px-8 py-4 text-[11px] tracking-[0.2em] text-white transition hover:bg-[#e2b542]"
         >
         BECOME A MEMBER

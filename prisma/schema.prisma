@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "../app/generated/prisma"
@@ -20,6 +15,24 @@ model Inquiry {
   start       String?
   end         String?
   message     String?
-  status String @default("NEW")
   createdAt   DateTime @default(now())
+  status      String   @default("NEW")
+}
+
+model MembershipApplication {
+  id              String    @id @default(cuid())
+  firstName       String
+  lastName        String
+  email           String
+  phone           String?
+  country         String?
+  occupation      String?
+  travelInterests String?
+  reason          String?
+  referral        String?
+  status          String    @default("PENDING")
+  adminNotes      String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  reviewedAt      DateTime?
 }
