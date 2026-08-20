@@ -229,7 +229,7 @@ export default function TheClubPage() {
             <div className="relative h-[430px] overflow-hidden md:h-[480px]">
 
             <Image
-                src="/images/the-club-membership.png"
+                src="/images/the-club-membership.jpg"
                 alt="Elegant private travel club interior overlooking the sea"
                 fill
                 priority
